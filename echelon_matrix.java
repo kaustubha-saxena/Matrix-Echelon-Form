@@ -3,21 +3,21 @@ import java.util.*;
 public class echelon_matrix {
     Scanner sc = new Scanner(System.in);
     int i, j, k;
-    float[][] mat;
+    int[][] mat;
     int row, col;
 
     void input(int r, int c) {
         row = r;
         col = c;
-        mat = new float[r][c];
+        mat = new int[r][c];
         for (i = 0; i < row; i++) {
             System.out.println("Enter row" + (i + 1));
             for (j = 0; j < col; j++) {
-                mat[i][j] = sc.nextFloat();
+                mat[i][j] = sc.nextInt();
             }
         }
     }
-
+// Display the matrix
     void display() {
         for (i = 0; i < row; i++) {
 
@@ -31,7 +31,7 @@ public class echelon_matrix {
 
     // Swaps the row a with b
     void row_swap(int a, int b) {
-        float temp;
+        int temp;
         for (k = 0; k < col; k++) {
             temp = mat[a][k];
             mat[a][k] = mat[b][k];
@@ -39,14 +39,14 @@ public class echelon_matrix {
         }
     }
 
-    void make_zero(float fac, int r1, int r2) {
+    void make_zero(int cons1, int r1, int cons2, int r2) {
 
         for (k = 0; k < col; k++) {
-            mat[r2][k] = (mat[r2][k] - fac * mat[r1][k]);
+            mat[r2][k] = (cons2*mat[r2][k] - cons1* mat[r1][k]);
         }
 
     }
-
+// Moves the zero row to bottom 
     void zero() {
 
         int x = row - 1;
@@ -55,6 +55,10 @@ public class echelon_matrix {
                 row_swap(i, x);
                 x--;
             }
+        }
+
+        if(mat[0][0]==0){
+            row_swap(0, 1);
         }
     }
 
@@ -68,21 +72,20 @@ public class echelon_matrix {
     }
 
     void calculate() {
-
+        
         for (j = 0; j < col; j++) {
 
             for (i = row - 1; i > j; i--) {
 
                 if (mat[i][j] != 0) {
+                    make_zero(mat[i][j], j, mat[j][j], i);
+                }
+                // else{
+                //     if(i<row-1){
+                //         row_swap(i, i+1);
 
-                    // System.out.print(mat[i][j] + "    ");
-                    float factor = mat[i][j] / mat[j][j];
-                    make_zero(factor, j, i);
-                    // System.out.println(factor);
-                }
-                else{
-                    // row_swap(i, i);
-                }
+                //     }
+                // }
             }
 
         }

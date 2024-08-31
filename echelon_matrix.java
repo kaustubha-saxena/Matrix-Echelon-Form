@@ -1,6 +1,6 @@
 import java.util.*;
 
-import javax.swing.plaf.metal.MetalBorders.ScrollPaneBorder;
+
 
 public class echelon_matrix {
     Scanner sc = new Scanner(System.in);
@@ -8,13 +8,13 @@ public class echelon_matrix {
     int[][] mat;
     int row, col;
 
-    void input(int r, int c) {
-        row = r;
-        col = c;
-        mat = new int[r][c];
-        for (i = 0; i < row; i++) {
+    void input(int row, int col) {
+        this.row = row;
+       this.col = col;
+        mat = new int[this.row][this.col];
+        for (i = 0; i < this.row; i++) {
             // System.out.println("Enter row" + (i + 1));
-            for (j = 0; j < col; j++) {
+            for (j = 0; j < this.col; j++) {
                 System.out.print("Enter (" + i + "," + j + ") : ");
                 mat[i][j] = sc.nextInt();
             }
@@ -34,12 +34,12 @@ public class echelon_matrix {
     }
 
     // Swaps the row a with b
-    void row_swap(int a, int b) {
+    void row_swap(int first_row_index, int second_row_index) {
         int temp;
         for (k = 0; k < col; k++) {
-            temp = mat[a][k];
-            mat[a][k] = mat[b][k];
-            mat[b][k] = temp;
+            temp = mat[first_row_index][k];
+            mat[first_row_index][k] = mat[second_row_index][k];
+            mat[second_row_index][k] = temp;
         }
     }
 
@@ -55,11 +55,11 @@ public class echelon_matrix {
     // Moves the zero row to bottom
     void zero() {
 
-        int x = row - 1;
+        int non_zero_row = row - 1;
         for (i = row - 1; i >= 0; i--) {
-            if (pivot(i) == -1) {
-                row_swap(i, x);
-                x--;
+            if (row_pivot(i) == -1) {
+                row_swap(i, non_zero_row);
+                non_zero_row--;
             }
         }
 
@@ -69,16 +69,16 @@ public class echelon_matrix {
     }
 
     // Returns the pivot element position
-    int pivot(int r) {
+    int row_pivot(int row_index) {
         for (int j = 0; j < col; j++) {
-            if (mat[r][j] != 0) {
+            if (mat[row_index][j] != 0) {
                 return j;
             }
         }
         return -1;
     }
 
-    void calculate() {
+    void echelon() {
 
         for (j = 0; j < col; j++) {
 
@@ -102,7 +102,7 @@ public class echelon_matrix {
         System.out.println("Original Matrix");
         ob.display();
         ob.zero();
-        ob.calculate();
+        ob.echelon();
         ob.zero();
         System.out.println("Echelon Form of the matrix is:");
         ob.display();
